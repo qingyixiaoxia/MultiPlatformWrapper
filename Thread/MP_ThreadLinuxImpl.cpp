@@ -20,49 +20,34 @@
 * IN THE SOFTWARE.
 */
 
-#ifndef MULTI_PLATFORM_THREAD_H
-#define MULTI_PLATFORM_THREAD_H
-#include "MPCommon.h"
-#include <map>
+#include "MP_ThreadLinuxImpl.h"
 
+#if defined (LINUX)
 namespace MultiPlatformWrapper
 {
-
-typedef int (*MPThreadLoopFunc)(void *pUser1, void *pUser2);
-class MPThreadLoopBase
+bool MP_ThreadLinuxImpl::start(MPThreadLoopBase *pListener, void *pUser1, void *pUser2)
 {
-public:
-	virtual int onMPThreadLoop(void *pUser1, void *pUser2) = 0;
-};
+    return false;
+}
 
-typedef enum
+bool MP_ThreadLinuxImpl::start(MPThreadLoopFunc pCallback, void *pUser1, void *pUser2)
 {
-    // TODO
-    // TODO
-    // TODO
-} ThreadOptTypes;
+    return false;
+}
 
-class MP_Thread
+bool MP_ThreadLinuxImpl::suspend()
 {
-public:
-	MP_Thread()
-	{
-	    m_pListener = NULL;
-		m_pCallback = NULL;
-	}
-	virtual ~MP_Thread() {}
-	void addOpt(ThreadOptTypes optType, long optValue);
-	virtual bool start(MPThreadLoopBase *pListener, void *pUser1, void *pUser2) = 0;
-	virtual bool start(MPThreadLoopFunc pCallback, void *pUser1, void *pUser2) = 0;
-	virtual bool suspend() = 0;
-	virtual bool resume() = 0;
-	virtual int stop() = 0;
-	static void sleep(unsigned long MS);
+	return false;
+}
 
-protected:
-	MPThreadLoopBase* m_pListener;
-	MPThreadLoopFunc m_pCallback;
-	std::map<ThreadOptTypes, long> m_options;
-};
+bool MP_ThreadLinuxImpl::resume()
+{
+	return false;
+}
+
+int MP_ThreadLinuxImpl::stop()
+{
+    return false;
+}
 }
 #endif
