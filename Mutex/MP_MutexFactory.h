@@ -20,18 +20,18 @@
 * IN THE SOFTWARE.
 */
 
-#ifndef MULTI_PLATFORM_MUTEX_H
-#define MULTI_PLATFORM_MUTEX_H
+#ifndef MULTI_PLATFORM_MUTEX_FACTORY_H
+#define MULTI_PLATFORM_MUTEX_FACTORY_H
+#include "MP_Mutex.h"
 #include "MPCommon.h"
 
 namespace MultiPlatformWrapper
 {
-class MP_Mutex
+class MP_MutexFactory
 {
 public:
-	virtual ~MP_Mutex() {}
-	virtual void lock() = 0;
-	virtual void unlock() = 0;
+	static MP_Mutex* createMutex(IN MPBaseLibraryType type, IN const char* pName);
 };
 }
+
 #endif

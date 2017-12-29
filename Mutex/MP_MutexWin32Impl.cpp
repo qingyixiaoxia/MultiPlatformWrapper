@@ -20,18 +20,38 @@
 * IN THE SOFTWARE.
 */
 
-#ifndef MULTI_PLATFORM_MUTEX_H
-#define MULTI_PLATFORM_MUTEX_H
-#include "MPCommon.h"
+#include "MP_MutexWin32Impl.h"
 
+#if defined (WIN32)
 namespace MultiPlatformWrapper
 {
-class MP_Mutex
+MP_MutexWin32Impl::MP_MutexWin32Impl(IN const char* pName)
 {
-public:
-	virtual ~MP_Mutex() {}
-	virtual void lock() = 0;
-	virtual void unlock() = 0;
-};
+    m_mutex = ::CreateMutex(NULL, FALSE, pName);
+}
+
+MP_MutexWin32Impl::~MP_MutexWin32Impl()
+{
+    if (m_mutex != NULL)
+    {
+        ::CloseHandle(m_mutex);
+    }
+}
+
+void MP_MutexWin32Impl::lock()
+{
+    if (m_mutex != NULL)
+    {
+        ::WaitForSingleObject(m_mutex, INFINITE);
+    }
+}
+
+void MP_MutexWin32Impl::unlock()
+{
+    if (m_mutex != NULL)
+    {
+        ::ReleaseMutex(m_mutex);
+    }
+}
 }
 #endif

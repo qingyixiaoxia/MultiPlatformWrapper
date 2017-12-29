@@ -20,18 +20,30 @@
 * IN THE SOFTWARE.
 */
 
-#ifndef MULTI_PLATFORM_MUTEX_H
-#define MULTI_PLATFORM_MUTEX_H
-#include "MPCommon.h"
+#include "MP_MutexFactory.h"
+#include "MP_MutexLinuxImpl.h"
+#include "MP_MutexWin32Impl.h"
 
 namespace MultiPlatformWrapper
 {
-class MP_Mutex
+MP_Mutex* MP_MutexFactory::createMutex(IN MPBaseLibraryType type, IN const char* pName)
 {
-public:
-	virtual ~MP_Mutex() {}
-	virtual void lock() = 0;
-	virtual void unlock() = 0;
-};
+    switch (type)
+    {
+        #if defined (WIN32)
+        case MP_BASE_LIBRARY_WIN32:
+			return new MP_MutexWin32Impl(pName);
+			break;
+		#endif
+
+        #if defined (LINUX)
+		case MP_BASE_LIBRARY_LINUX:
+			return new MP_MutexLinuxImpl(pName);
+			break;
+		#endif
+
+		default:
+			return NULL;
+    }
 }
-#endif
+}

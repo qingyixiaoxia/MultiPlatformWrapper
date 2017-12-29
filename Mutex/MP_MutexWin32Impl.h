@@ -20,18 +20,30 @@
 * IN THE SOFTWARE.
 */
 
-#ifndef MULTI_PLATFORM_MUTEX_H
-#define MULTI_PLATFORM_MUTEX_H
+#ifndef MULTI_PLATFORM_MUTEX_WIN32_IMPL_H
+#define MULTI_PLATFORM_MUTEX_WIN32_IMPL_H
+#include "MP_Mutex.h"
 #include "MPCommon.h"
+#if defined (WIN32)
+#include <windows.h>
+#endif
 
+#if defined (WIN32)
 namespace MultiPlatformWrapper
 {
-class MP_Mutex
+class MP_MutexWin32Impl : public MP_Mutex
 {
 public:
-	virtual ~MP_Mutex() {}
-	virtual void lock() = 0;
-	virtual void unlock() = 0;
+	MP_MutexWin32Impl(IN const char* pName);
+	~MP_MutexWin32Impl();
+
+public:
+	void lock();
+	void unlock();
+
+private:
+    HANDLE m_mutex;
 };
 }
+#endif
 #endif

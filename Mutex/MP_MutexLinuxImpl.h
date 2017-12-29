@@ -20,18 +20,27 @@
 * IN THE SOFTWARE.
 */
 
-#ifndef MULTI_PLATFORM_MUTEX_H
-#define MULTI_PLATFORM_MUTEX_H
+#ifndef MULTI_PLATFORM_MUTEX_LINUX_IMPL_H
+#define MULTI_PLATFORM_MUTEX_LINUX_IMPL_H
+#include "MP_Mutex.h"
 #include "MPCommon.h"
 
+#if defined (LINUX)
 namespace MultiPlatformWrapper
 {
-class MP_Mutex
+class MP_MutexLinuxImpl : public MP_Mutex
 {
 public:
-	virtual ~MP_Mutex() {}
-	virtual void lock() = 0;
-	virtual void unlock() = 0;
+	MP_MutexLinuxImpl(IN const char* pName);
+	~MP_MutexLinuxImpl();
+
+public:
+	void lock();
+	void unlock();
+
+private:
+	
 };
 }
+#endif
 #endif
